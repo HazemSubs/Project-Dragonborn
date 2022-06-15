@@ -168,6 +168,8 @@ public class MainWindow { //AKA Encounter Mode
 		addAc.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		addAc.setBounds(108, 77, 21, 21);*/
 		
+		// TESTER MONSTER BOX
+		
 		MonsterComposite[] monsterListViewers = new MonsterComposite[12];
 		
 		btnAddToEncounter.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
