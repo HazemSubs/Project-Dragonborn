@@ -238,6 +238,7 @@ public class MainWindow { //AKA Encounter Mode
 								}
 								this.change(parent, healthChange);
 							} catch (Exception hpChangeError) {
+								tempHpChange.setText("");
 								monsterDetails.setText("Please only enter integer values");
 							}
 						}
@@ -278,6 +279,7 @@ public class MainWindow { //AKA Encounter Mode
 								}
 								this.change(parent, acChange);
 							} catch (Exception hpChangeError) {
+								tempAcChange.setText("");
 								monsterDetails.setText("Please only enter integer values");
 							}
 						}
