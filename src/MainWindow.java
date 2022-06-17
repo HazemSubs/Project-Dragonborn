@@ -16,6 +16,16 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 
 public class MainWindow { //AKA Encounter Mode
 
@@ -58,7 +68,9 @@ public class MainWindow { //AKA Encounter Mode
 	protected void createContents() {
 		shlProjectDragonborn = new Shell();
 		shlProjectDragonborn.setImage(SWTResourceManager.getImage(MainWindow.class, "/img/Dragonborn.PNG"));
-		shlProjectDragonborn.setSize(800, 600);
+		shlProjectDragonborn.setMinimumSize(800, 600);
+		shlProjectDragonborn.setMaximumSize(1920, 1080);
+		shlProjectDragonborn.setSize(1200, 1000);
 		shlProjectDragonborn.setText("Project Dragonborn");
 		shlProjectDragonborn.setLayout(new GridLayout(3, false));
 		
@@ -69,8 +81,8 @@ public class MainWindow { //AKA Encounter Mode
 		mntmNewCheckbox.setToolTipText("Make Encounters");
 		mntmNewCheckbox.setText("Encounter Menu");
 		
-		Composite choose = new Composite(shlProjectDragonborn, SWT.NONE);
-		choose.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		Composite choose = new Composite(shlProjectDragonborn, SWT.BORDER);
+		choose.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 2));
 		choose.setLayout(new GridLayout(1, false));
 		
 		Button btnAddToEncounter = new Button(choose, SWT.FLAT);
@@ -101,25 +113,34 @@ public class MainWindow { //AKA Encounter Mode
 		monsterSelectorBox.setText("Select Monster");
 		
 		monsterDetails = new Text(choose, SWT.BORDER | SWT.READ_ONLY | SWT.WRAP | SWT.MULTI);
-		GridData gd_monsterDetails = new GridData(SWT.FILL, SWT.FILL, false, true, 1, 16);
+		GridData gd_monsterDetails = new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1);
 		gd_monsterDetails.widthHint = 191;
 		monsterDetails.setLayoutData(gd_monsterDetails);
 		monsterDetails.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
 		monsterDetails.setText("Monster Details");
 		
-		Label label = new Label(shlProjectDragonborn, SWT.BORDER | SWT.SEPARATOR);
-		label.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true, 1, 1));
+		Composite InitiativeViewer = new Composite(shlProjectDragonborn, SWT.BORDER);
+		GridData gd_InitiativeViewer = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 2);
+		gd_InitiativeViewer.widthHint = 200;
+		InitiativeViewer.setLayoutData(gd_InitiativeViewer);
+		
+		Composite composite = new Composite(InitiativeViewer, SWT.NONE);
+		composite.setBounds(10, 10, 180, 840);
+		
+		Label lblNewLabel = new Label(composite, SWT.NONE);
+		lblNewLabel.setBounds(10, 10, 160, 25);
+		lblNewLabel.setText("Initiative List");
 		
 		Composite monsterViewer = new Composite(shlProjectDragonborn, SWT.BORDER);
 		monsterViewer.setLayout(null);
 		GridData gd_monsterViewer = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-		gd_monsterViewer.heightHint = 471;
-		gd_monsterViewer.widthHint = 1173;
+		gd_monsterViewer.heightHint = 572;
+		gd_monsterViewer.widthHint = 795;
 		monsterViewer.setLayoutData(gd_monsterViewer);
 		
 		/*// TBR TESTING MONSTOR BLOCK
 		Composite test = new Composite(monsterViewer, SWT.BORDER);
-		test.setBounds(10+(186), 10, 180, 180);
+		test.setBounds(10+(3*186), 382, 180, 180);
 		Label name = new Label(test, SWT.WRAP);
 		name.setBounds(0, 0, 150, 40);
 		name.setText("TEST");
@@ -140,7 +161,7 @@ public class MainWindow { //AKA Encounter Mode
 		delete_1.setBounds(157, 0, 21, 21);
 		delete_1.setText("X");
 		
-		hpChange = new Text(test, SWT.BORDER);
+		Text hpChange = new Text(test, SWT.BORDER);
 		hpChange.setBounds(150, 46, 28, 21);
 		hpChange.setText("233");
 		
@@ -154,7 +175,7 @@ public class MainWindow { //AKA Encounter Mode
 		addHp.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		addHp.setText("+");
 		
-		acChange = new Text(test, SWT.BORDER);
+		Text acChange = new Text(test, SWT.BORDER);
 		acChange.setText("233");
 		acChange.setBounds(150, 77, 28, 21);
 		
@@ -166,9 +187,9 @@ public class MainWindow { //AKA Encounter Mode
 		Button addAc = new Button(test, SWT.NONE);
 		addAc.setText("+");
 		addAc.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-		addAc.setBounds(108, 77, 21, 21);*/
+		addAc.setBounds(108, 77, 21, 21);
 		
-		// TESTER MONSTER BOX
+		// TESTER MONSTER BOX*/
 		
 		MonsterComposite[] monsterListViewers = new MonsterComposite[12];
 		
@@ -197,6 +218,23 @@ public class MainWindow { //AKA Encounter Mode
 					String sName = list.getSpecificMonster(monsterSelectorBox.getText()).getName(); //GET NAME FROM MONSTER SELECTION BOX
 					int hpNum = list.getSpecificMonster(monsterSelectorBox.getText()).getHp(); //GET HP FROM MONSTER SELECTION BOX
 					int acNum = list.getSpecificMonster(monsterSelectorBox.getText()).getAc(); //GET AC FROM MONSTER SELECTION BOX
+					
+					monsterListViewers[emptyViewer].dragSource = new DragSource(monsterListViewers[emptyViewer], DND.DROP_MOVE);
+					monsterListViewers[emptyViewer].dragSource.setTransfer(new Transfer[] {TextTransfer.getInstance()});
+					monsterListViewers[emptyViewer].dragSource.addDragListener(new DragSourceAdapter() {
+						public void dragSetData(DragSourceEvent event) {
+							int averageDex = 0;
+							int numOfViewersAvailable = 0;
+							for (int i = 0; i < 12; i++) {
+								if (monsterListViewers[i] != null) {
+									numOfViewersAvailable++;
+									averageDex = averageDex + monsterListViewers[i].monster.getDex();
+								}
+							}
+							averageDex = averageDex / numOfViewersAvailable;
+							event.data = averageDex;
+						}
+					});
 					
 					monsterListViewers[emptyViewer].monster = new Monster(list.getSpecificMonster(sName));
 					//monsterListViewers[emptyViewer].monster = list.getSpecificMonster(sName); TO MAKE ALL SHARE THE SAME STATS AFTER CHANGING
@@ -380,6 +418,11 @@ public class MainWindow { //AKA Encounter Mode
 		});
 		btnAddToEncounter.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
 		btnAddToEncounter.setText("Add to Encounter");
+		
+		Composite playerViewer = new Composite(shlProjectDragonborn, SWT.BORDER);
+		GridData gd_playerViewer = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+		gd_playerViewer.widthHint = 872;
+		playerViewer.setLayoutData(gd_playerViewer);
 
 	}
 }
