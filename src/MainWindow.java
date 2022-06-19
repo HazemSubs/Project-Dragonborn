@@ -124,12 +124,56 @@ public class MainWindow { //AKA Encounter Mode
 		gd_InitiativeViewer.widthHint = 200;
 		InitiativeViewer.setLayoutData(gd_InitiativeViewer);
 		
-		Composite composite = new Composite(InitiativeViewer, SWT.NONE);
-		composite.setBounds(10, 10, 180, 840);
 		
-		Label lblNewLabel = new Label(composite, SWT.NONE);
-		lblNewLabel.setBounds(10, 10, 160, 25);
-		lblNewLabel.setText("Initiative List");
+		Button groupMonsters = new Button(InitiativeViewer, SWT.CHECK);
+		groupMonsters.setBounds(87, 10, 103, 25);
+		groupMonsters.setText("Group Monsters");
+		
+		Label initList = new Label(InitiativeViewer, SWT.NONE);
+		initList.setAlignment(SWT.CENTER);
+		initList.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+		initList.setBounds(0, 0, 81, 25);
+		initList.setText("Initiative List");
+		
+		InitiativeComposite[] initiativeListViewers = new InitiativeComposite[20];
+		
+		for (int i = 0; i < 20; i++) {
+			initiativeListViewers[i] = new InitiativeComposite(InitiativeViewer, SWT.BORDER);
+			initiativeListViewers[i].setBounds(10, (41+(36*i)), 180, 30);
+			
+			initiativeListViewers[i].num = new Label(initiativeListViewers[i], SWT.BORDER);
+			initiativeListViewers[i].num.setText("");
+			initiativeListViewers[i].num.setAlignment(SWT.CENTER);
+			initiativeListViewers[i].num.setBounds(150, 2, 25, 25);
+			
+			initiativeListViewers[i].name = new Label(initiativeListViewers[i], SWT.NONE);
+			initiativeListViewers[i].name.setBounds(0, 2, 56, 16);
+			initiativeListViewers[i].name.setText("");
+		}
+		
+		/*InitiativeComposite composite_1 = new InitiativeComposite(InitiativeViewer, SWT.BORDER);
+		composite_1.setBounds(10, 41, 180, 30);
+		
+		Label num = new Label(composite_1, SWT.BORDER);
+		num.setText("20");
+		num.setAlignment(SWT.CENTER);
+		num.setBounds(150, 2, 25, 25);
+		
+		Label name = new Label(composite_1, SWT.NONE);
+		name.setBounds(0, 2, 56, 16);
+		name.setText("Name");
+		
+		Composite composite_1_1 = new Composite(InitiativeViewer, SWT.BORDER);
+		composite_1_1.setBounds(10, 77, 180, 30);
+		
+		Label num_1 = new Label(composite_1_1, SWT.BORDER);
+		num_1.setText("20");
+		num_1.setAlignment(SWT.CENTER);
+		num_1.setBounds(150, 2, 25, 25);
+		
+		Label name_1 = new Label(composite_1_1, SWT.NONE);
+		name_1.setText("Name");
+		name_1.setBounds(0, 2, 56, 16);*/
 		
 		Composite monsterViewer = new Composite(shlProjectDragonborn, SWT.BORDER);
 		monsterViewer.setLayout(null);
@@ -189,7 +233,14 @@ public class MainWindow { //AKA Encounter Mode
 		addAc.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		addAc.setBounds(108, 77, 21, 21);
 		
+		Button addToInitiativeBtn = new Button(test, SWT.BORDER);
+		addToInitiativeBtn.setBounds(0, 157, 95, 21);
+		addToInitiativeBtn.setText("Add to Initiative");
+		
 		// TESTER MONSTER BOX*/
+		
+		//String abc = "Abc\nAbc";
+		//System.out.println(abc.replaceFirst("Abc\n", ""));
 		
 		MonsterComposite[] monsterListViewers = new MonsterComposite[12];
 		
@@ -219,25 +270,7 @@ public class MainWindow { //AKA Encounter Mode
 					int hpNum = list.getSpecificMonster(monsterSelectorBox.getText()).getHp(); //GET HP FROM MONSTER SELECTION BOX
 					int acNum = list.getSpecificMonster(monsterSelectorBox.getText()).getAc(); //GET AC FROM MONSTER SELECTION BOX
 					
-					monsterListViewers[emptyViewer].dragSource = new DragSource(monsterListViewers[emptyViewer], DND.DROP_MOVE);
-					monsterListViewers[emptyViewer].dragSource.setTransfer(new Transfer[] {TextTransfer.getInstance()});
-					monsterListViewers[emptyViewer].dragSource.addDragListener(new DragSourceAdapter() {
-						public void dragSetData(DragSourceEvent event) {
-							int averageDex = 0;
-							int numOfViewersAvailable = 0;
-							for (int i = 0; i < 12; i++) {
-								if (monsterListViewers[i] != null) {
-									numOfViewersAvailable++;
-									averageDex = averageDex + monsterListViewers[i].monster.getDex();
-								}
-							}
-							averageDex = averageDex / numOfViewersAvailable;
-							event.data = averageDex;
-						}
-					});
-					
 					monsterListViewers[emptyViewer].monster = new Monster(list.getSpecificMonster(sName));
-					//monsterListViewers[emptyViewer].monster = list.getSpecificMonster(sName); TO MAKE ALL SHARE THE SAME STATS AFTER CHANGING
 					monsterListViewers[emptyViewer].name = new Label(monsterListViewers[emptyViewer], SWT.WRAP);
 					monsterListViewers[emptyViewer].name.setBounds(0, 0, 150, 40);
 					monsterListViewers[emptyViewer].name.setText(sName);
@@ -403,11 +436,41 @@ public class MainWindow { //AKA Encounter Mode
 									monsterListViewers[i].setVisible(false);
 									break;
 								}
-							}	
+							}
+							
+							for (int i = 0; i < 20; i++) {
+								if (parent.equals(initiativeListViewers[i].monster)) {
+									initiativeListViewers[i].monster = null;
+									initiativeListViewers[i].name.setText("");
+									initiativeListViewers[i].num.setText("");
+								}
+							}
 						}
 					});
 					monsterListViewers[emptyViewer].delete.setBounds(157, 0, 21, 21);
 					monsterListViewers[emptyViewer].delete.setText("X");
+					
+					monsterListViewers[emptyViewer].addToInitiativeBtn = new Button(monsterListViewers[emptyViewer], SWT.BORDER);
+					Button tempInit = monsterListViewers[emptyViewer].addToInitiativeBtn;
+					monsterListViewers[emptyViewer].addToInitiativeBtn.setBounds(0, 157, 95, 21);
+					monsterListViewers[emptyViewer].addToInitiativeBtn.setText("Add to Initiative");
+					monsterListViewers[emptyViewer].addToInitiativeBtn.addSelectionListener(new SelectionAdapter() {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							this.addToInitiative((MonsterComposite) tempInit.getParent());
+						}
+
+						private void addToInitiative(MonsterComposite parent) {
+							for (int i = 0; i < 20; i++) {
+								if (initiativeListViewers[i].name.getText().equals("")) {
+									initiativeListViewers[i].monster = parent;
+									initiativeListViewers[i].name.setText(initiativeListViewers[i].monster.name.getText());
+									initiativeListViewers[i].num.setText(initiativeListViewers[i].monster.num.getText());
+									break;
+								}
+							}	
+						}
+					});
 					
 					monsterListViewers[emptyViewer].setVisible(true);
 				} catch (Exception addEncounterError) {
