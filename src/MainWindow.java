@@ -73,6 +73,7 @@ public class MainWindow { //AKA Encounter Mode
 		shlProjectDragonborn.setSize(1200, 1000);
 		shlProjectDragonborn.setText("Project Dragonborn");
 		shlProjectDragonborn.setLayout(new GridLayout(3, false));
+		//shlProjectDragonborn.setFullScreen(true);
 		
 		Menu menu = new Menu(shlProjectDragonborn, SWT.BAR);
 		shlProjectDragonborn.setMenuBar(menu);
@@ -128,6 +129,8 @@ public class MainWindow { //AKA Encounter Mode
 		Button groupMonsters = new Button(InitiativeViewer, SWT.CHECK);
 		groupMonsters.setBounds(87, 10, 103, 25);
 		groupMonsters.setText("Group Monsters");
+		groupMonsters.setSelection(true);
+		System.out.println(groupMonsters.getSelection());
 		
 		Label initList = new Label(InitiativeViewer, SWT.NONE);
 		initList.setAlignment(SWT.CENTER);
@@ -135,11 +138,16 @@ public class MainWindow { //AKA Encounter Mode
 		initList.setBounds(0, 0, 81, 25);
 		initList.setText("Initiative List");
 		
-		InitiativeComposite[] initiativeListViewers = new InitiativeComposite[20];
+		Button initiativeRollBtn = new Button(InitiativeViewer, SWT.FLAT);
+		initiativeRollBtn.setText("Roll Initiative");
+		initiativeRollBtn.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
+		initiativeRollBtn.setBounds(10, 41, 180, 25);
 		
-		for (int i = 0; i < 20; i++) {
+		InitiativeComposite[] initiativeListViewers = new InitiativeComposite[21];
+		
+		for (int i = 0; i < 21; i++) {
 			initiativeListViewers[i] = new InitiativeComposite(InitiativeViewer, SWT.BORDER);
-			initiativeListViewers[i].setBounds(10, (41+(36*i)), 180, 30);
+			initiativeListViewers[i].setBounds(10, (71+(36*i)), 180, 30);
 			
 			initiativeListViewers[i].num = new Label(initiativeListViewers[i], SWT.BORDER);
 			initiativeListViewers[i].num.setText("");
@@ -438,7 +446,7 @@ public class MainWindow { //AKA Encounter Mode
 								}
 							}
 							
-							for (int i = 0; i < 20; i++) {
+							for (int i = 0; i < 21; i++) {
 								if (parent.equals(initiativeListViewers[i].monster)) {
 									initiativeListViewers[i].monster = null;
 									initiativeListViewers[i].name.setText("");
@@ -461,7 +469,7 @@ public class MainWindow { //AKA Encounter Mode
 						}
 
 						private void addToInitiative(MonsterComposite parent) {
-							for (int i = 0; i < 20; i++) {
+							for (int i = 0; i < 21; i++) {
 								if (initiativeListViewers[i].name.getText().equals("")) {
 									initiativeListViewers[i].monster = parent;
 									initiativeListViewers[i].name.setText(initiativeListViewers[i].monster.name.getText());
