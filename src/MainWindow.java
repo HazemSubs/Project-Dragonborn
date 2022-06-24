@@ -130,7 +130,6 @@ public class MainWindow { //AKA Encounter Mode
 		groupMonsters.setBounds(87, 10, 103, 25);
 		groupMonsters.setText("Group Monsters");
 		groupMonsters.setSelection(true);
-		System.out.println(groupMonsters.getSelection());
 		
 		Label initList = new Label(InitiativeViewer, SWT.NONE);
 		initList.setAlignment(SWT.CENTER);
@@ -138,10 +137,10 @@ public class MainWindow { //AKA Encounter Mode
 		initList.setBounds(0, 0, 81, 25);
 		initList.setText("Initiative List");
 		
-		Button initiativeRollBtn = new Button(InitiativeViewer, SWT.FLAT);
-		initiativeRollBtn.setText("Roll Initiative");
-		initiativeRollBtn.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
-		initiativeRollBtn.setBounds(10, 41, 180, 25);
+		Button RollInitiativeBtn = new Button(InitiativeViewer, SWT.FLAT);
+		RollInitiativeBtn.setText("Roll Initiative");
+		RollInitiativeBtn.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
+		RollInitiativeBtn.setBounds(10, 41, 180, 25);
 		
 		InitiativeComposite[] initiativeListViewers = new InitiativeComposite[21];
 		
@@ -251,6 +250,38 @@ public class MainWindow { //AKA Encounter Mode
 		//System.out.println(abc.replaceFirst("Abc\n", ""));
 		
 		MonsterComposite[] monsterListViewers = new MonsterComposite[12];
+		
+		// SHOULD BE ITS OWN CLASS (PROBABLY)
+		RollInitiativeBtn.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				try {
+					if (RollInitiativeBtn.getSelection() == true) {
+						int avgDex = 0;
+						int monNum = 0;
+						for (int i = 0; i < 12; i++) // 12 Because of maximum of 12 monsters on screen. (To be increased?)
+						{
+							if (monsterListViewers[i] == null || !(monsterListViewers[i].isVisible()))
+							{
+								avgDex = avgDex + monsterListViewers[i].monster.getDex();
+								monNum++;
+							}
+						}
+					}
+				} catch (Exception setDetailsException) {
+					monsterDetails.setText("Could not roll initiative! Error Code: RollInitiativeBtnGroup");
+				}
+				
+				try {
+					if (RollInitiativeBtn.getSelection() == false) {
+						
+					}
+				} catch (Exception setDetailsException) {
+					monsterDetails.setText("Could not roll initiative! Error Code: RollInitiativeBtnIndividual");
+				}
+			}
+		});
 		
 		btnAddToEncounter.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		btnAddToEncounter.addSelectionListener(new SelectionAdapter() {
