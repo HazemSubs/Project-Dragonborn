@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Text;
 public class MonsterComposite extends Composite {
 	
 	protected Label name, hp, ac, num;
-	protected Button delete, changeHp, changeAc, addToInitiativeBtn;
+	protected Button delete, changeHp, changeAc;
 	protected Text hpChange, acChange;
 	protected Monster monster;
 
