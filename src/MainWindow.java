@@ -3,6 +3,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.layout.GridLayout;
+
+import java.util.Arrays;
 import java.util.Random;
 
 import org.eclipse.swt.SWT;
@@ -127,9 +129,9 @@ public class MainWindow { //AKA Encounter Mode
 		rollInitiativeBtn.setFont(SWTResourceManager.getFont("Segoe UI", 11, SWT.NORMAL));
 		rollInitiativeBtn.setBounds(10, 41, 180, 25);
 		
-		InitiativeComposite[] initiativeListViewers = new InitiativeComposite[12];
+		InitiativeComposite[] initiativeListViewers = new InitiativeComposite[20];
 		
-		for (int i = 0; i < 12; i++)
+		for (int i = 0; i < 20; i++)
 		{
 			initiativeListViewers[i] = new InitiativeComposite(InitiativeViewer, SWT.BORDER);
 			initiativeListViewers[i].setBounds(10, (71+(36*i)), 180, 30);
@@ -139,9 +141,14 @@ public class MainWindow { //AKA Encounter Mode
 			initiativeListViewers[i].num.setAlignment(SWT.CENTER);
 			initiativeListViewers[i].num.setBounds(150, 2, 25, 25);*/
 			
-			initiativeListViewers[i].name = new Label(initiativeListViewers[i], SWT.NONE);
-			initiativeListViewers[i].name.setBounds(0, 2, 56, 16);
+			initiativeListViewers[i].name = new Text(initiativeListViewers[i], SWT.NONE);
+			initiativeListViewers[i].name.setBounds(0, 2, 140, 24);
 			initiativeListViewers[i].name.setText("");
+			
+			initiativeListViewers[i].num = new Text(initiativeListViewers[i], SWT.NONE);
+			initiativeListViewers[i].num.setBounds(150, 2, 24, 24);
+			initiativeListViewers[i].num.setText("0");
+			
 		}
 				
 		/*InitiativeComposite composite_1 = new InitiativeComposite(InitiativeViewer, SWT.BORDER);
@@ -238,28 +245,49 @@ public class MainWindow { //AKA Encounter Mode
 		MonsterComposite[] monsterListViewers = new MonsterComposite[12];
 		
 		rollInitiativeBtn.addSelectionListener(new SelectionAdapter() {
+			
+			InitiativeComposite[] organizedList = new InitiativeComposite[initiativeListViewers.length];
+			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				int avgDex = 0;
-				int monAmount = 0;
-				int monsterInitRoll = 0;
 				
-				for (int i = 0; i < 12; i++)
+				for (int i = 0; i < initiativeListViewers.length; i++) {
+					organizedList[i] = new InitiativeComposite(InitiativeViewer, SWT.BORDER, initiativeListViewers[i]);
+				}
+				
+				System.out.println(initiativeListViewers[0].num.getText() + initiativeListViewers[0].name.getText()); // TBR
+				System.out.println(organizedList[0].num.getText() + organizedList[0].name.getText()); // TBR
+
+
+				Arrays.sort(organizedList);
+				
+				System.out.println(initiativeListViewers[0].num.getText() + initiativeListViewers[0].name.getText()); // TBR
+				System.out.println(organizedList[0].num.getText() + organizedList[0].name.getText()); // TBR
+												
+				for (int i = 0; i < initiativeListViewers.length; i++) 
 				{
-					if (monsterListViewers[i] != null && monsterListViewers[i].isVisible())
+					if (initiativeListViewers[i].name.getText().equals(""))
 					{
-						avgDex = avgDex + monsterListViewers[i].monster.getDex();
-						monAmount++;
+						initiativeListViewers[i].num.setText("");
 					}
 				}
-				if (monAmount != 0) {
-					avgDex = avgDex / monAmount;
-				} else if (monAmount == 0) {
-					monsterDetails.setText("Please add monsters/players first");
-					return;
+				
+				for (int i = 0; i < organizedList.length; i++)
+				{
+					//System.out.println("");
+					//System.out.println(organizedList[i].name.getText() + " " + organizedList[i].num.getText()); // TBR
+					//System.out.println("");
+					//System.out.println(initiativeListViewers[i].name.getText() + " " + initiativeListViewers[i].num.getText()); // TBR
+					//organizedList[i].num.setText((initiativeListViewers[i].num.getText()));
+					//if (organizedList[i].name.getText().equals("")) {break;}
+					//String name = organizedList[i].name.getText();
+					//String number = organizedList[i].num.getText();
+					initiativeListViewers[i].name.setText(organizedList[i].name.getText());
+					initiativeListViewers[i].num.setText(organizedList[i].num.getText());
 				}
 				
-				monsterInitRoll = rand.nextInt(21) + avgDex;
+				this.getClass();
+				
 			}
 		});
 		
@@ -453,14 +481,6 @@ public class MainWindow { //AKA Encounter Mode
 								}
 							}
 							
-							for (int i = 0; i < 12; i++) {
-								if (parent.equals(initiativeListViewers[i].monster)) {
-									initiativeListViewers[i].monster = null;
-									initiativeListViewers[i].name.setText("");
-									//initiativeListViewers[i].num.setText("");
-									initiativeListViewers[i].initiative = 0;
-								}
-							}
 						}
 					});
 					monsterListViewers[emptyViewer].delete.setBounds(157, 0, 21, 21);
@@ -479,7 +499,7 @@ public class MainWindow { //AKA Encounter Mode
 		
 		Composite playerViewer = new Composite(shlProjectDragonborn, SWT.BORDER);
 		
-		MonsterComposite[] playerViewerList = new MonsterComposite[9];
+		/*MonsterComposite[] playerViewerList = new MonsterComposite[9];
 		String[] playerNames = {"Brunk", "Florence", "Gatrie", "Jonathan", "Krusk", "Oceanus", "Rolthos", "Seamus", "Ublish"};//new String[9];
 		
 		for (int i = 0; i < 9; i++) {
@@ -496,7 +516,7 @@ public class MainWindow { //AKA Encounter Mode
 			playerViewerList[i].delete.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 			playerViewerList[i].delete.setBounds(150, 0, 30, 30);
 			playerViewerList[i].delete.setText("X");
-		}
+		}*/
 		
 		/*MonsterComposite seamus = new MonsterComposite(playerViewer, SWT.BORDER);
 		seamus.setBounds(10, 10, 180, 30);

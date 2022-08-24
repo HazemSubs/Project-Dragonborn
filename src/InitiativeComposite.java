@@ -1,25 +1,29 @@
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
 public class InitiativeComposite extends Composite implements Comparable<InitiativeComposite> {
 	
-	protected Label name;
-	// protected Label num;
-	protected MonsterComposite monster;
-	protected int initiative = 0;
+	protected Text name;
+	protected Text num;
+	private int initiative;
 
 	public InitiativeComposite(Composite parent, int style) {
 		super(parent, style);
 		
 	}
+	
+	public InitiativeComposite(Composite parent, int style, InitiativeComposite another) {
+		super(parent, style);
+		
+		this.name = another.name;
+		this.num = another.num;
+		this.initiative = another.initiative;
+	}
 
 	@Override
 	public int compareTo(InitiativeComposite o) {
-		if (initiative > o.initiative) {
-			return -1;
-		} else if (initiative < o.initiative) {
-			return 1;
-		} else return 0;
-	}
+		return o.num.getText().compareTo(this.num.getText());
+	}	
 
 }
