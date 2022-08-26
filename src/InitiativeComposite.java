@@ -2,7 +2,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class InitiativeComposite extends Composite implements Comparable<InitiativeComposite> {
+public class InitiativeComposite extends Composite {
 	
 	protected Text name;
 	protected Text num;
@@ -20,10 +20,5 @@ public class InitiativeComposite extends Composite implements Comparable<Initiat
 		this.num = another.num;
 		this.initiative = another.initiative;
 	}
-
-	@Override
-	public int compareTo(InitiativeComposite o) {
-		return o.num.getText().compareTo(this.num.getText());
-	}	
 
 }
