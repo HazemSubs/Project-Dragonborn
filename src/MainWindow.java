@@ -250,62 +250,69 @@ public class MainWindow { //AKA Encounter Mode
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
-				InitiativeContainer[] organizedList = new InitiativeContainer[initiativeListViewers.length];
+				try {
 				
-				for (int i = 0; i < initiativeListViewers.length; i++) {
-					organizedList[i] = new InitiativeContainer();
-					organizedList[i].setName(initiativeListViewers[i].name.getText());
-					organizedList[i].setInit(initiativeListViewers[i].num.getText());
-				}
-				
-				//System.out.println(initiativeListViewers[0].num.getText() + initiativeListViewers[0].name.getText()); // TBR
-				System.out.println(organizedList[0].getName() + organizedList[0].getInit()); // TBR
-
-
-				if (organizedList[3].getName().equals("Jorah"))
-				{
-					this.getClass();
-				}
-				Arrays.sort(organizedList);
-				
-				//System.out.println(initiativeListViewers[0].num.getText() + initiativeListViewers[0].name.getText()); // TBR
-				System.out.println(organizedList[0].getName() + organizedList[0].getInit()); // TBR
+					InitiativeContainer[] organizedList = new InitiativeContainer[initiativeListViewers.length];
 				
 				
-				String[] names = new String[initiativeListViewers.length];
-				String[] initCounts = new String[initiativeListViewers.length];
-				
-				/*for (int i = 0; i < initiativeListViewers.length; i++)
-				{
-					names[i] = initiativeListViewers[i].name.getText();
-					initCounts[i] = initiativeListViewers[i].num.getText();
-				}*/
-												
-				for (int i = 0; i < initiativeListViewers.length; i++) 
-				{
-					if (initiativeListViewers[i].name.getText().equals(""))
-					{
-						initiativeListViewers[i].num.setText("");
+					for (int i = 0; i < initiativeListViewers.length; i++) {
+						organizedList[i] = new InitiativeContainer();
+						organizedList[i].setName(initiativeListViewers[i].name.getText());
+						organizedList[i].setInit(initiativeListViewers[i].num.getText());
 					}
-				}
 				
-				for (int i = 0; i < initiativeListViewers.length; i++)
-				{
-					initiativeListViewers[i].name.setText(organizedList[i].getName());
-					initiativeListViewers[i].num.setText(organizedList[i].getInit());
-					//System.out.println("");
-					//System.out.println(organizedList[i].name.getText() + " " + organizedList[i].num.getText()); // TBR
-					//System.out.println("");
-					//System.out.println(initiativeListViewers[i].name.getText() + " " + initiativeListViewers[i].num.getText()); // TBR
-					//organizedList[i].num.setText((initiativeListViewers[i].num.getText()));
-					//if (organizedList[i].name.getText().equals("")) {break;}
-					//String name = organizedList[i].name.getText();
-					//String number = organizedList[i].num.getText();
-					//initiativeListViewers[i].name.setText(initiativeListViewers[i].name.getText());
-					//initiativeListViewers[i].num.setText(initiativeListViewers[i].num.getText());
-				}
+					//System.out.println(initiativeListViewers[0].num.getText() + initiativeListViewers[0].name.getText()); // TBR
+					System.out.println(organizedList[0].getName() + organizedList[0].getInit()); // TBR
+
+
+					if (organizedList[3].getName().equals("Jorah"))
+					{
+						this.getClass();
+					}
+					Arrays.sort(organizedList);
 				
-				this.getClass();
+					//System.out.println(initiativeListViewers[0].num.getText() + initiativeListViewers[0].name.getText()); // TBR
+					System.out.println(organizedList[0].getName() + organizedList[0].getInit()); // TBR
+				
+				
+					String[] names = new String[initiativeListViewers.length];
+					String[] initCounts = new String[initiativeListViewers.length];
+				
+					/*for (int i = 0; i < initiativeListViewers.length; i++)
+					{
+						names[i] = initiativeListViewers[i].name.getText();
+						initCounts[i] = initiativeListViewers[i].num.getText();
+					}*/
+												
+					for (int i = 0; i < initiativeListViewers.length; i++) 
+					{
+						if (initiativeListViewers[i].name.getText().equals(""))
+						{
+							initiativeListViewers[i].num.setText("");
+						}
+					}
+				
+					for (int i = 0; i < initiativeListViewers.length; i++)
+					{
+						initiativeListViewers[i].name.setText(organizedList[i].getName());
+						initiativeListViewers[i].num.setText(organizedList[i].getInit());
+						//System.out.println("");
+						//System.out.println(organizedList[i].name.getText() + " " + organizedList[i].num.getText()); // TBR
+						//System.out.println("");
+						//System.out.println(initiativeListViewers[i].name.getText() + " " + initiativeListViewers[i].num.getText()); // TBR
+						//organizedList[i].num.setText((initiativeListViewers[i].num.getText()));
+						//if (organizedList[i].name.getText().equals("")) {break;}
+						//String name = organizedList[i].name.getText();
+						//String number = organizedList[i].num.getText();
+						//initiativeListViewers[i].name.setText(initiativeListViewers[i].name.getText());
+						//initiativeListViewers[i].num.setText(initiativeListViewers[i].num.getText());
+					}
+				
+					this.getClass();
+					
+				} catch (Exception rollInitiativeErr) {
+					monsterDetails.setText("Please enter a valid number into the initiative number slots");
+				}
 				
 			}
 		});
