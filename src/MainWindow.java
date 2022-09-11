@@ -70,6 +70,8 @@ public class MainWindow { //AKA Encounter Mode
 		shlProjectDragonborn.setLayout(new GridLayout(3, false));
 		//shlProjectDragonborn.setFullScreen(true);
 		
+		ViewersConstructor constructor = new ViewersConstructor();
+		
 		rand = new Random();
 		
 		Composite choose = new Composite(shlProjectDragonborn, SWT.BORDER);
@@ -130,16 +132,16 @@ public class MainWindow { //AKA Encounter Mode
 		rollInitiativeBtn.setBounds(10, 41, 180, 25);
 		
 		InitiativeComposite[] initiativeListViewers = new InitiativeComposite[20];
-		
-		for (int i = 0; i < 20; i++)
+		constructor.initiativeViewerConstructor(initiativeListViewers, InitiativeViewer);
+		/*for (int i = 0; i < 20; i++)
 		{
 			initiativeListViewers[i] = new InitiativeComposite(InitiativeViewer, SWT.BORDER);
 			initiativeListViewers[i].setBounds(10, (71+(36*i)), 180, 30);
 			
 			/*initiativeListViewers[i].num = new Label(initiativeListViewers[i], SWT.BORDER);
-			initiativeListViewers[i].num.setText("");
-			initiativeListViewers[i].num.setAlignment(SWT.CENTER);
-			initiativeListViewers[i].num.setBounds(150, 2, 25, 25);*/
+			//initiativeListViewers[i].num.setText("");
+			//initiativeListViewers[i].num.setAlignment(SWT.CENTER);
+			//initiativeListViewers[i].num.setBounds(150, 2, 25, 25);
 			
 			initiativeListViewers[i].name = new Text(initiativeListViewers[i], SWT.NONE);
 			initiativeListViewers[i].name.setBounds(0, 2, 140, 24);
@@ -149,7 +151,7 @@ public class MainWindow { //AKA Encounter Mode
 			initiativeListViewers[i].num.setBounds(150, 2, 24, 24);
 			initiativeListViewers[i].num.setText("0");
 			
-		}
+		}*/
 				
 		/*InitiativeComposite composite_1 = new InitiativeComposite(InitiativeViewer, SWT.BORDER);
 		composite_1.setBounds(10, 41, 180, 30);
@@ -174,6 +176,8 @@ public class MainWindow { //AKA Encounter Mode
 		Label name_1 = new Label(composite_1_1, SWT.NONE);
 		name_1.setText("Name");
 		name_1.setBounds(0, 2, 56, 16);*/
+		
+		// CONSTRUCTOR STOPPED WORKING HERE
 		
 		Composite monsterViewer = new Composite(shlProjectDragonborn, SWT.BORDER);
 		monsterViewer.setLayout(null);
