@@ -10,11 +10,6 @@ public class ViewersConstructor {
 			initiativeListViewers[i] = new InitiativeComposite(InitiativeViewer, SWT.BORDER);
 			initiativeListViewers[i].setBounds(10, (71+(36*i)), 180, 30);
 			
-			/*initiativeListViewers[i].num = new Label(initiativeListViewers[i], SWT.BORDER);
-			initiativeListViewers[i].num.setText("");
-			initiativeListViewers[i].num.setAlignment(SWT.CENTER);
-			initiativeListViewers[i].num.setBounds(150, 2, 25, 25);*/
-			
 			initiativeListViewers[i].name = new Text(initiativeListViewers[i], SWT.NONE);
 			initiativeListViewers[i].name.setBounds(0, 2, 140, 24);
 			initiativeListViewers[i].name.setText("");
